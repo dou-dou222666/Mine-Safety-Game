@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>矿山安全教育游戏</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="login-screen" class="screen active">
+            <div class="login-container">
+                <h1>矿山安全教育游戏</h1>
+                <div class="login-form">
+                    <input type="text" id="username" placeholder="请输入用户名" maxlength="20">
+                    <button id="login-btn">登录</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu-screen" class="screen">
+            <div class="menu-container">
+                <img src="开始与选择界面图.png" alt="开始与选择界面" class="menu-bg">
+                <button id="start-game-btn" class="menu-btn start-btn">开始游戏</button>
+                <button id="theory-btn" class="menu-btn theory-btn">理论学习</button>
+            </div>
+        </div>
+
+        <div id="theory-screen" class="screen">
+            <div class="theory-container">
+                <img src="理论学习图.png" alt="理论学习界面" class="theory-bg">
+                <button class="category-btn" data-category="法律法规与总则">法律法规与总则</button>
+                <button class="category-btn" data-category="顶板与冲击地压防治">顶板与冲击地压防治</button>
+                <button class="category-btn" data-category="通风与瓦斯防治">通风与瓦斯防治</button>
+                <button class="category-btn" data-category="爆破与爆炸物品管理">爆破与爆炸物品管理</button>
+                <button class="category-btn" data-category="爆炸与火灾防治">爆炸与火灾防治</button>
+                <button class="category-btn" data-category="运输提升与电气安全">运输提升与电气安全</button>
+                <button class="category-btn" data-category="矿井水害防治">矿井水害防治</button>
+                <button class="category-btn" data-category="职业健康与应急避险">职业健康与应急避险</button>
+                <button id="back-to-menu-btn" class="back-btn">返回</button>
+            </div>
+        </div>
+
+
+        <div id="category-questions-screen" class="screen">
+            <div class="category-questions-container">
+                <h2 id="category-title"></h2>
+                <div id="questions-list"></div>
+                <button id="back-to-theory-btn" class="back-btn">返回</button>
+            </div>
+        </div>
+
+        <div id="game-screen" class="screen">
+            <div class="game-container">
+                <canvas id="game-canvas"></canvas>
+                <div class="game-ui">
+                    <div class="game-info">
+                        <span>弹药: <span id="ammo-count">10</span></span>
+                        <span>敌机: <span id="enemy-count">0</span></span>
+                        <span>生命: <span id="health-count">5</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-container">
+                <h2>知识问答</h2>
+                <div class="quiz-progress">
+                    <span>题目: <span id="current-question">1</span>/<span id="total-questions">5</span></span>
+                </div>
+                <div id="quiz-content">
+                    <div class="question-text" id="question-text"></div>
+                    <div class="options-container" id="options-container"></div>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px;">
+                        <button id="prev-question-btn" class="quiz-btn" disabled>上一题</button>
+                        <button id="next-question-btn" class="quiz-btn" disabled>下一题</button>
+                    </div>
+                </div>
+                <div id="quiz-result" class="quiz-result hidden">
+                    <h3>问答结果</h3>
+                    <p>准确率: <span id="accuracy">0</span>%</p>
+                    <p>获得弹药: <span id="earned-ammo">0</span></p>
+                    <button id="continue-game-btn" class="quiz-btn">继续游戏</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="fail-screen" class="screen">
+            <div class="result-container">
+                <img id="fail-bg-img" src="通关失败图.png" alt="通关失败" class="result-bg">
+                <button id="retry-level-btn" class="result-btn retry-btn">重新挑战</button>
+                <button id="fail-review-btn" class="result-btn review-btn">回顾知识</button>
+            </div>
+        </div>
+
+        <div id="success-screen" class="screen">
+            <div class="result-container">
+                <img id="success-bg-img" src="勋章图.png" alt="通关成功" class="result-bg">
+                <button id="next-level-btn" class="result-btn retry-btn">进入下一关</button>
+                <button id="success-review-btn" class="result-btn review-btn">回顾知识</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* 游戏界面样式 */
+body {
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    overflow: hidden;
+    background: #000;
+}
+/* 游戏容器样式 */
+#app {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+/* 游戏屏幕样式 */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+/* 游戏屏幕样式 */
+.screen.active {
+    display: flex;
+}
+/* 登录容器样式 */
+.login-container {
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 60px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+/* 登录标题样式 */
+.login-container h1 {
+    color: white;
+    font-size: 36px;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+/* 登录表单样式 */
+.login-form input {
+    width: 300px;
+    padding: 15px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.9);
+}
+/* 登录按钮样式 */
+.login-form button {
+    width: 300px;
+    padding: 15px 20px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+/* 登录按钮悬停样式 */
+.login-form button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(240, 147, 251, 0.4);
+}
+/* 菜单容器样式 */
+.menu-container,
+.theory-container,
+.result-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+/* 菜单背景样式 */
+.menu-bg,
+.theory-bg,
+.result-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* 菜单按钮样式 */
+.menu-btn {
+    position: absolute;
+    padding: 15px 40px;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+/* 菜单按钮悬停样式 */
+.menu-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+/* 开始按钮样式 */
+.start-btn {
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* 理论按钮样式 */
+.theory-btn {
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* 分类按钮样式 */
+.category-btn {
+    position: absolute;
+    padding: 20px 50px;          /* 适中内边距 */
+    font-size: 18px;             /* 字体大小 */
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* 文字阴影 */
+    white-space: nowrap;         /* 禁止换行 */
+    overflow: hidden;            /* 溢出隐藏 */
+    min-width: 160px;            /* 最小宽度 */
+    max-width: 220px;            /* 最大宽度 */
+    box-sizing: border-box;      /* 盒模型：内边距包含在宽度内 */
+    text-align: left;            /* 新增：文本左对齐 */
+}
+
+/* 分类按钮悬停样式 */
+.category-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 20px rgba(240, 147, 251, 0.4);
+}
+/* 分类按钮位置样式 */
+.category-btn:nth-of-type(1) { top: 15%; left: 20%; }
+.category-btn:nth-of-type(2) { top: 15%; left: 55%; }
+.category-btn:nth-of-type(3) { top: 30%; left: 20%; }
+.category-btn:nth-of-type(4) { top: 30%; left: 55%; }
+.category-btn:nth-of-type(5) { top: 45%; left: 20%; }
+.category-btn:nth-of-type(6) { top: 45%; left: 55%; }
+.category-btn:nth-of-type(7) { top: 60%; left: 20%; }
+.category-btn:nth-of-type(8) { top: 60%; left: 55%; }
+/* 返回按钮样式 */
+.back-btn {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+}
+/* 返回按钮悬停样式 */
+.back-btn:hover {
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+}
+/* 分类题目容器样式 */
+.category-questions-container {
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+/* 分类题目标题样式 */
+.category-questions-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+/* 分类题目项样式 */
+.question-item {
+    background: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+/* 分类题目项标题样式 */
+.question-item h3 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+/* 分类题目项类型样式 */
+.question-item .question-type {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #667eea;
+    color: white;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+/* 分类题目项选项样式 */
+.question-item .options {
+    margin: 15px 0;
+}
+/* 分类题目项选项样式 */
+.question-item .option {
+    padding: 8px 15px;
+    margin: 5px 0;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+/* 分类题目项选项样式 */
+.question-item .answer {
+    color: #28a745;
+    font-weight: bold;
+    margin: 10px 0;
+}
+/* 分类题目项选项样式 */
+.question-item .explanation {
+    color: #666;
+    font-style: italic;
+    line-height: 1.6;
+}
+/* 游戏容器样式 */
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+/* 游戏画布样式 */
+#game-canvas {
+    display: block;
+    background: url('游戏背景图.png') center/cover no-repeat;
+    background-size: 100% 100%;
+}
+/* 游戏UI样式 */
+.game-ui {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}
+/* 游戏信息样式 */
+.game-info {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+/* 游戏信息样式 */
+.game-info span {
+    margin-right: 30px;
+}
+/* 游戏容器样式 */
+.quiz-container {
+    width: 90%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+/* 游戏标题样式 */
+.quiz-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 32px;
+}
+/* 游戏进度样式 */
+.quiz-progress {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+/* 游戏题目样式 */
+.question-text {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    font-size: 22px;
+    color: #333;
+    line-height: 1.6;
+}
+/* 游戏选项样式 */
+.options-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+/* 游戏选项样式 */
+.option-btn {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    background: white;
+    color: #667eea;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+/* 游戏选项悬停样式 */
+.option-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-3px);
+}
+/* 游戏选项正确样式 */
+.option-btn.correct {
+    background: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+/* 游戏选项错误样式 */
+.option-btn.wrong {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+/* 游戏结果样式 */
+.quiz-result {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+/* 游戏结果标题样式 */
+.quiz-result h3 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+/* 游戏结果内容样式 */
+.quiz-result p {
+    font-size: 20px;
+    color: #666;
+    margin: 15px 0;
+}
+/* 游戏结果按钮样式 */
+.quiz-btn {
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+}
+/* 游戏结果按钮悬停样式 */
+.quiz-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+}
+/* 游戏结果按钮样式 */
+.result-btn {
+    position: absolute;
+    padding: 15px 40px;
+    font-size: 22px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+/* 游戏结果按钮悬停样式 */
+.result-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.retry-btn,
+.restart-btn {
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+/* 游戏结果按钮样式 */
+.review-btn {
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* 成功界面按钮精确定位 */
+#next-level-btn {
+    top: 78%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+}
+
+#success-review-btn {
+    top: 78%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+}
+/* 游戏结果按钮样式 */
+.hidden {
+    display: none !important;
+}
