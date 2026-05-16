@@ -410,15 +410,15 @@ body {
 
 .retry-btn,
 .restart-btn {
-    top: 55%;
-    left: 50%;
+    top: 78%;
+    left: 35%;
     transform: translate(-50%, -50%);
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
 /* 游戏结果按钮样式 */
 .review-btn {
-    top: 70%;
-    left: 50%;
+    top: 78%;
+    left: 65%;
     transform: translate(-50%, -50%);
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
