@@ -202,8 +202,8 @@ class Game {
     }
     async loadLevelQuestions() {
         const category = this.levels[this.currentLevel].category;
-        // 使用绝对路径，确保从网站根目录加载
-        const response = await fetch('/questions.json');
+        // 使用相对路径，从静态目录加载 questions.json
+        const response = await fetch('questions.json');
         const all = await response.json();
         if (all[category] && all[category].length >= 50) {
             this.levelQuestions = all[category].slice(0, 50);

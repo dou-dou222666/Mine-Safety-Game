@@ -13,7 +13,7 @@ app.use(express.static('.'));
 
 app.get('/api/questions', (req, res) => {
   try {
-    const questionsData = fs.readFileSync(path.join(__dirname, 'questions.json'), 'utf8');
+    const questionsData = fs.readFileSync(path.join(__dirname, 'public', 'questions.json'), 'utf8');
     const questions = JSON.parse(questionsData);
     res.json(questions);
   } catch (error) {
@@ -23,7 +23,7 @@ app.get('/api/questions', (req, res) => {
 
 app.get('/api/questions/:category', (req, res) => {
   try {
-    const questionsData = fs.readFileSync(path.join(__dirname, 'questions.json'), 'utf8');
+    const questionsData = fs.readFileSync(path.join(__dirname, 'public', 'questions.json'), 'utf8');
     const questions = JSON.parse(questionsData);
     const category = req.params.category;
     
@@ -39,7 +39,7 @@ app.get('/api/questions/:category', (req, res) => {
 
 app.get('/api/random-questions', (req, res) => {
   try {
-    const questionsData = fs.readFileSync(path.join(__dirname, 'questions.json'), 'utf8');
+    const questionsData = fs.readFileSync(path.join(__dirname, 'public', 'questions.json'), 'utf8');
     const questions = JSON.parse(questionsData);
     const count = parseInt(req.query.count) || 5;
     
@@ -61,7 +61,7 @@ app.get('/api/random-questions', (req, res) => {
 
 app.get('/api/categories', (req, res) => {
   try {
-    const questionsData = fs.readFileSync(path.join(__dirname, 'questions.json'), 'utf8');
+    const questionsData = fs.readFileSync(path.join(__dirname, 'public', 'questions.json'), 'utf8');
     const questions = JSON.parse(questionsData);
     const categories = Object.keys(questions);
     res.json(categories);
