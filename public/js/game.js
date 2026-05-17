@@ -108,8 +108,18 @@ class Game {
         this.buttonSound = new Audio('sound/button.wav');
         this.buttonSound.volume = 0.2;
 
-        // 背景音乐是否已启动
-        this.musicStarted = false;
+        // 背景音乐是否正在播放
+        this.musicPlaying = false;
+        // 用户是否已与页面交互（解决浏览器自动播放策略）
+        this.userInteracted = false;
+        // 监听首次用户交互，解锁音频播放
+        const unlockAudio = () => {
+            this.userInteracted = true;
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('keydown', unlockAudio);
+        };
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('keydown', unlockAudio);
         // ===== 音频预加载结束 =====
         this.init();
     }
@@ -158,7 +168,10 @@ class Game {
         // 背景音乐控制：只在游戏画面播放，进入其他画面暂停
         if (screenId === 'game-screen') {
             this.playMusic();
-            this.initGameCanvas();
+            // 只在首次进入游戏画面时初始化画布，避免从答题返回时重置
+            if (!this.gameLoop) {
+                this.initGameCanvas();
+            }
         } else {
             this.stopMusic();
         }
@@ -169,8 +182,11 @@ class Game {
     handleLogin() {
         const usernameInput = document.getElementById('username');
         this.username = usernameInput.value.trim();
+        this.userInteracted = true;  // 登录点击算用户交互
         
         if (this.username) {
+            this.buttonSound.currentTime = 0;
+            this.buttonSound.play().catch(console.warn);
             this.showScreen('menu-screen');
         } else {
             alert('请输入用户名');
@@ -180,6 +196,9 @@ class Game {
      * 处理开始游戏事件，重置游戏状态并显示游戏屏幕
      */
     async startGame() {
+        this.userInteracted = true;  // 按钮点击算用户交互
+        this.buttonSound.currentTime = 0;
+        this.buttonSound.play().catch(console.warn);
         this.ammo = 10;
         this.enemies = [];
         this.bullets = [];
@@ -541,8 +560,7 @@ class Game {
         }
         this.meDownSound.currentTime = 0;
         this.meDownSound.play().catch(console.warn);
-        this.stopMusic();
-        this.levelLose();
+        this.levelLose();  // levelLose -> showScreen('fail-screen') -> stopMusic()
     }
 
     /** 
@@ -907,16 +925,21 @@ class Game {
         }
     }
     playMusic() {
-        if (!this.musicStarted) {
-            this.bgMusic.play().catch(console.warn);
-            this.musicStarted = true;
+        if (!this.musicPlaying && this.userInteracted) {
+            this.bgMusic.play().then(() => {
+                this.musicPlaying = true;
+            }).catch(err => {
+                console.warn('背景音乐播放失败:', err);
+            });
         }
     }
 
     stopMusic() {
-        this.bgMusic.pause();
-        this.bgMusic.currentTime = 0;
-        this.musicStarted = false;
+        if (this.musicPlaying) {
+            this.bgMusic.pause();
+            this.bgMusic.currentTime = 0;
+            this.musicPlaying = false;
+        }
     }
     levelWin() {
         clearInterval(this.gameLoop);
