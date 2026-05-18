@@ -83,6 +83,8 @@ class Game {
         this.normalQuestionIndex = 0;    // 无尽模式下正常出题的起始索引
         this.answeredRecords = [];       // 存储每道题的作答记录（用于回看）
         this.canNavigate = false;        // 是否允许通过按钮切换题目
+        this.wrongQuestionsReport = [];  // 仅记录前50题的错题（用于错题报告）
+        this.lastResultScreen = 'fail-screen'; // 记录来源界面，供返回使用
         // ===== 音频预加载 =====
         this.bgMusic = new Audio('sound/game_music.ogg');
         this.bgMusic.loop = true;
@@ -108,18 +110,8 @@ class Game {
         this.buttonSound = new Audio('sound/button.wav');
         this.buttonSound.volume = 0.2;
 
-        // 背景音乐是否正在播放
-        this.musicPlaying = false;
-        // 用户是否已与页面交互（解决浏览器自动播放策略）
-        this.userInteracted = false;
-        // 监听首次用户交互，解锁音频播放
-        const unlockAudio = () => {
-            this.userInteracted = true;
-            document.removeEventListener('click', unlockAudio);
-            document.removeEventListener('keydown', unlockAudio);
-        };
-        document.addEventListener('click', unlockAudio);
-        document.addEventListener('keydown', unlockAudio);
+        // 背景音乐是否已启动
+        this.musicStarted = false;
         // ===== 音频预加载结束 =====
         this.init();
     }
@@ -146,6 +138,11 @@ class Game {
         document.getElementById('continue-game-btn').addEventListener('click', () => this.continueGame());  // 新增
         document.getElementById('prev-question-btn').addEventListener('click', () => this.prevQuestion());
         document.getElementById('next-question-btn').addEventListener('click', () => this.nextQuestion());
+        // 错题报告按钮
+        document.getElementById('fail-report-btn').addEventListener('click', () => this.showWrongReport());
+        document.getElementById('success-report-btn').addEventListener('click', () => this.showWrongReport());
+        // 错题报告返回按钮：返回对应的成功/失败界面
+        document.getElementById('back-from-report-btn').addEventListener('click', () => this.showScreen(this.lastResultScreen));
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.addEventListener('click', (e) => this.showCategoryQuestions(e.target.dataset.category));
         });
@@ -168,10 +165,7 @@ class Game {
         // 背景音乐控制：只在游戏画面播放，进入其他画面暂停
         if (screenId === 'game-screen') {
             this.playMusic();
-            // 只在首次进入游戏画面时初始化画布，避免从答题返回时重置
-            if (!this.gameLoop) {
-                this.initGameCanvas();
-            }
+            this.initGameCanvas();
         } else {
             this.stopMusic();
         }
@@ -182,11 +176,8 @@ class Game {
     handleLogin() {
         const usernameInput = document.getElementById('username');
         this.username = usernameInput.value.trim();
-        this.userInteracted = true;  // 登录点击算用户交互
         
         if (this.username) {
-            this.buttonSound.currentTime = 0;
-            this.buttonSound.play().catch(console.warn);
             this.showScreen('menu-screen');
         } else {
             alert('请输入用户名');
@@ -196,9 +187,6 @@ class Game {
      * 处理开始游戏事件，重置游戏状态并显示游戏屏幕
      */
     async startGame() {
-        this.userInteracted = true;  // 按钮点击算用户交互
-        this.buttonSound.currentTime = 0;
-        this.buttonSound.play().catch(console.warn);
         this.ammo = 10;
         this.enemies = [];
         this.bullets = [];
@@ -212,6 +200,7 @@ class Game {
         this.levelAnsweredIndex = 0;
         this.levelCorrectCount = 0;
         this.wrongQuestions = [];          // 清空错题集
+        this.wrongQuestionsReport = [];    // 清空错题报告
         this.infiniteQuiz = false;
         this.quizComplete = false;
         this.roundResults = [];
@@ -221,8 +210,8 @@ class Game {
     }
     async loadLevelQuestions() {
         const category = this.levels[this.currentLevel].category;
-        // 使用相对路径，从静态目录加载 questions.json
-        const response = await fetch('questions.json');
+        // 使用绝对路径，确保从网站根目录加载
+        const response = await fetch('/questions.json');
         const all = await response.json();
         if (all[category] && all[category].length >= 50) {
             this.levelQuestions = all[category].slice(0, 50);
@@ -560,7 +549,8 @@ class Game {
         }
         this.meDownSound.currentTime = 0;
         this.meDownSound.play().catch(console.warn);
-        this.levelLose();  // levelLose -> showScreen('fail-screen') -> stopMusic()
+        this.stopMusic();
+        this.levelLose();
     }
 
     /** 
@@ -793,6 +783,14 @@ class Game {
             const isCorrect = this.roundResults[idx];
             if (!isCorrect) {
                 this.wrongQuestions.push(q);
+                // 仅在非无尽模式（前50题阶段）记录错题报告
+                if (!this.infiniteQuiz) {
+                    // 避免重复添加同一道题
+                    const alreadyIn = this.wrongQuestionsReport.some(r => r.question === q.question);
+                    if (!alreadyIn) {
+                        this.wrongQuestionsReport.push(q);
+                    }
+                }
             }
         });
 
@@ -925,21 +923,16 @@ class Game {
         }
     }
     playMusic() {
-        if (!this.musicPlaying && this.userInteracted) {
-            this.bgMusic.play().then(() => {
-                this.musicPlaying = true;
-            }).catch(err => {
-                console.warn('背景音乐播放失败:', err);
-            });
+        if (!this.musicStarted) {
+            this.bgMusic.play().catch(console.warn);
+            this.musicStarted = true;
         }
     }
 
     stopMusic() {
-        if (this.musicPlaying) {
-            this.bgMusic.pause();
-            this.bgMusic.currentTime = 0;
-            this.musicPlaying = false;
-        }
+        this.bgMusic.pause();
+        this.bgMusic.currentTime = 0;
+        this.musicStarted = false;
     }
     levelWin() {
         clearInterval(this.gameLoop);
@@ -954,6 +947,7 @@ class Game {
             nextBtn.textContent = '返回主菜单';
             nextBtn.onclick = () => this.showScreen('menu-screen');
         }
+        this.lastResultScreen = 'success-screen'; // 记录来源界面
         this.showScreen('success-screen');
     }
 
@@ -964,6 +958,7 @@ class Game {
         const retryBtn = document.getElementById('retry-level-btn');
         retryBtn.textContent = '重新挑战';
         retryBtn.onclick = () => this.restartLevel();
+        this.lastResultScreen = 'fail-screen'; // 记录来源界面
         this.showScreen('fail-screen');
     }
 
@@ -982,6 +977,52 @@ class Game {
      */
     restartGame() {
         this.startGame();
+    }
+
+    /**
+     * 显示错题报告界面
+     */
+    showWrongReport() {
+        const levelName = this.levels[this.currentLevel].name;
+        document.getElementById('wrong-report-title').textContent = `《${levelName}》 错题报告`;
+
+        // 动态生成小标题
+        let subtitle = document.getElementById('wrong-report-subtitle');
+        if (!subtitle) {
+            subtitle = document.createElement('p');
+            subtitle.id = 'wrong-report-subtitle';
+            document.getElementById('wrong-report-title').insertAdjacentElement('afterend', subtitle);
+        }
+        subtitle.textContent = `本关共答错 ${this.wrongQuestionsReport.length} 道题（仅统计正常答题阶段）`;
+
+        const list = document.getElementById('wrong-report-list');
+        list.innerHTML = '';
+
+        if (this.wrongQuestionsReport.length === 0) {
+            list.innerHTML = '<div class="wrong-report-empty">🎉 本关没有错题！太棒了！</div>';
+        } else {
+            this.wrongQuestionsReport.forEach((q, index) => {
+                const typeText = q.type === 'choice' ? '选择题' : '判断题';
+                const answerText = q.type === 'choice' ? q.answer : (q.answer ? '正确' : '错误');
+
+                const optionsHtml = q.type === 'choice'
+                    ? `<div class="wr-options">${q.options.map(opt => `<div class="wr-option">${opt}</div>`).join('')}</div>`
+                    : '';
+
+                const item = document.createElement('div');
+                item.className = 'wrong-report-item';
+                item.innerHTML = `
+                    <span class="wr-type">${typeText}</span>
+                    <h3>第${index + 1}题：${q.question}</h3>
+                    ${optionsHtml}
+                    <div class="wr-answer">✅ 正确答案：${answerText}</div>
+                    <div class="wr-explanation">📌 解析：${q.explanation || '无解析'}</div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        this.showScreen('wrong-report-screen');
     }
 }
 

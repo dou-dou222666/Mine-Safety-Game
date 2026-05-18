@@ -90,6 +90,7 @@
             <div class="result-container">
                 <img id="fail-bg-img" src="通关失败图.png" alt="通关失败" class="result-bg">
                 <button id="retry-level-btn" class="result-btn retry-btn">重新挑战</button>
+                <button id="fail-report-btn" class="result-btn report-btn">错题报告</button>
                 <button id="fail-review-btn" class="result-btn review-btn">回顾知识</button>
             </div>
         </div>
@@ -98,7 +99,16 @@
             <div class="result-container">
                 <img id="success-bg-img" src="勋章图.png" alt="通关成功" class="result-bg">
                 <button id="next-level-btn" class="result-btn retry-btn">进入下一关</button>
+                <button id="success-report-btn" class="result-btn report-btn">错题报告</button>
                 <button id="success-review-btn" class="result-btn review-btn">回顾知识</button>
+            </div>
+        </div>
+
+        <div id="wrong-report-screen" class="screen">
+            <div class="wrong-report-container">
+                <h2 id="wrong-report-title">错题报告</h2>
+                <div id="wrong-report-list"></div>
+                <button id="back-from-report-btn" class="back-btn">返回</button>
             </div>
         </div>
     </div>

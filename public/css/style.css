@@ -435,6 +435,102 @@ body {
     left: 65%;
     transform: translate(-50%, -50%);
 }
+/* 错题报告按钮 - 位于两按钮正中间，水平居中 */
+.report-btn {
+    top: 78%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+    color: #333;
+    text-shadow: none;
+}
+
+/* 错题报告界面 */
+.wrong-report-container {
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    background: rgba(255, 255, 255, 0.97);
+    padding: 30px;
+    border-radius: 15px;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.wrong-report-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 28px;
+}
+
+#wrong-report-subtitle {
+    text-align: center;
+    color: #888;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+.wrong-report-item {
+    background: #fff5f5;
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    border-left: 4px solid #dc3545;
+}
+
+.wrong-report-item h3 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 17px;
+    line-height: 1.5;
+}
+
+.wrong-report-item .wr-type {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #dc3545;
+    color: white;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.wrong-report-item .wr-options {
+    margin: 10px 0;
+}
+
+.wrong-report-item .wr-option {
+    padding: 6px 12px;
+    margin: 4px 0;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+}
+
+.wrong-report-item .wr-answer {
+    color: #28a745;
+    font-weight: bold;
+    margin: 8px 0 4px 0;
+    font-size: 15px;
+}
+
+.wrong-report-item .wr-explanation {
+    color: #555;
+    font-style: italic;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.wrong-report-empty {
+    text-align: center;
+    color: #888;
+    font-size: 20px;
+    padding: 40px 0;
+}
+
 /* 游戏结果按钮样式 */
 .hidden {
     display: none !important;
